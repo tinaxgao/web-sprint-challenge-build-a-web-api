@@ -1,5 +1,6 @@
-const express = require('express');
+const express = require("express");
 const server = express();
+const projectsRouter = require("./projects/projects-router");
 
 server.use(express.json());
 
@@ -8,12 +9,10 @@ server.use(express.json());
 // Build your projects router in /api/projects/projects-router.js
 // Do NOT `server.listen()` inside this file!
 
-server.get("/api/users", (req, res) => {
-    res.json([
-      { id: 1, username: "foo", password: "p123" },
-      { id: 2, username: "bar", password: "p456" },
-      { id: 3, username: "foobar", password: "p789" },
-    ]);
-  });
+server.use("/api/projects", projectsRouter);
+
+server.get("/", (req, res) => {
+  res.send(`<h2>Hello World</h2>`);
+});
 
 module.exports = server;
