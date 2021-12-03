@@ -32,21 +32,20 @@ router.post("/", validateProject, (req, res, next) => {
     .catch(next);
 });
 
-router.put("/", async (req, res, next) => {
-  try {
-    Projects.get();
-
-    res.json(res);
-  } catch (err) {
-    next(err);
-  }
+router.put("/:id", validateId, validateProject, (req, res, next) => {
+    const changes = req.body
+    Projects.update(req.params.id, changes)
+    .then((proj) => {
+      res.json(proj);
+    })
+    .catch(next);
 });
 
-router.delete("/", async (req, res, next) => {
+router.delete("/:id", validateId, async (req, res, next) => {
   try {
-    Projects.get();
-
-    res.json(res);
+    const proj = await Projects.get(req.params.id);
+    await Projects.remove(req.params.id);
+    res.json(proj);
   } catch (err) {
     next(err);
   }
