@@ -51,11 +51,10 @@ router.delete("/:id", validateId, async (req, res, next) => {
   }
 });
 
-router.get("/", async (req, res, next) => {
+router.get("/:id/actions", validateId, async (req, res, next) => {
   try {
-    Projects.get();
-
-    res.json(res);
+    const actions = await Projects.getProjectActions(req.params.id);
+    res.json(actions);
   } catch (err) {
     next(err);
   }
