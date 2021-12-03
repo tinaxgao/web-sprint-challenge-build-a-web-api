@@ -1,4 +1,4 @@
-/*
+/* KEEPING THIS MASTERPIECE:
 play this: https://www.youtube.com/watch?v=d-diB65scQU
 
 Sing along:
@@ -12,3 +12,29 @@ I need this code, but don't know where, perhaps should make some middleware, don
 
 Pull your server into this file and start it!
 */
+
+require("dotenv").config();
+const path = require("path");
+const express = require("express");
+
+const server = express();
+server.use(express.json());
+server.use(express.static(path.join(__dirname, "client/build")));
+
+server.get("/api/users", (req, res) => {
+  res.json([
+    { id: 1, username: "foo", password: "p123" },
+    { id: 2, username: "bar", password: "p456" },
+    { id: 3, username: "foobar", password: "p789" },
+  ]);
+});
+
+server.get(`*`, (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build", "index.html"));
+});
+
+const PORT = process.env.PORT || 9000;
+
+server.listen(PORT, () => {
+  console.log(`listening on ${PORT}`);
+});
